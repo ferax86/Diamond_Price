@@ -1,24 +1,17 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# Diamonds Price Estimation
+# ui.R
 
 library(shiny)
 library(ggplot2)
 library(plotly)
 data(diamonds)
 
-# Define UI for application that draws a histogram
 shinyUI(fluidPage(
 
     # Application title
     titlePanel("Diamonds Price Estimation 10/30/2020"),
 
-    # Sidebar with a slider input for number of bins
+    # Sidebar for information of the diamond piece to use
     sidebarLayout(
         sidebarPanel(
             sliderInput("i_carat", "Carat:",
@@ -52,6 +45,7 @@ shinyUI(fluidPage(
             
         ),
 
+        # Results panel
         mainPanel(
             tabsetPanel(type = "tabs",
                         tabPanel("Result",

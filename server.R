@@ -1,11 +1,5 @@
-#
-# This is the server logic of a Shiny web application. You can run the
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# Diamonds Price Estimation
+# server.R
 
 library(shiny)
 library(ggplot2)
@@ -15,10 +9,11 @@ data(diamonds)
 
 shinyServer(function(input, output) {
 
+    # Fit the model 
     fitModel <- lm(I(log(price)) ~ I(carat^(1/3)) + carat + cut + color + clarity, 
                    data = diamonds)
  
-       
+    # Predict with the user input   
     pricePred <- reactive({
         
        predict(fitModel, 
@@ -29,7 +24,7 @@ shinyServer(function(input, output) {
        
     })
  
-       
+    # Format the price estimation   
     output$price <- renderText({
         
         paste("Estimated price = ",
@@ -37,20 +32,21 @@ shinyServer(function(input, output) {
               sep = "")
     })
     
-    
+   
+    # Form the title for the plot 
     output$GraphTitle <- renderText({
         
         paste("Data used to build the estimation model (Cut attribute not shown)")
     })
     
-    
+    # Form the plot with plotly
     output$diamplot <- renderPlotly({
     
         plot_ly(diamonds, x = ~carat, z = ~price, y = ~clarity, color = ~color, 
                 type = "scatter3d", mode = "markers", size = c(1))
     })
     
-
+    # Build the information for the documentation tab
     output$docum <- renderText({
         
         paste0("<h3><b>Objective</b></h3>",
